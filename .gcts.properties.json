@@ -1,0 +1,20 @@
+{
+  "name": "tierconnect-bt-connector-erp-sap-s4hana",
+  "version": "1.0.0",
+  "description": "Git Hub for Seagull Account",
+  "repositoryLayout": {
+    "formatVersion": 5,
+    "format": "json",
+    "objectStorage": "plain",
+    "metaInformation": ".gctsmetadata/",
+    "tableContent": "true",
+    "readableSource": "false",
+    "keepClient": "false"
+  },
+  "configurations": [
+    {
+      "key": "CLIENT_VCS_LOGLVL",
+      "value": "info"
+    }
+  ]
+}
