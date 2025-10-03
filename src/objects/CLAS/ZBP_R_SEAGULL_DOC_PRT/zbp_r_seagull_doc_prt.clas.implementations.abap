@@ -117,6 +117,7 @@ CLASS LHC_ZR_SEAGULL_DOC_PRT IMPLEMENTATION.
     WITH CORRESPONDING #( keys )
     RESULT DATA(materialdocs).
 
+if materialdocs IS not INITIAL.
     SELECT  materialdocument,
             materialdocumentyear
       FROM zseagull_i_matdocs
@@ -128,6 +129,7 @@ CLASS LHC_ZR_SEAGULL_DOC_PRT IMPLEMENTATION.
     IF sy-subrc NE 0.
       CLEAR lt_matdocs_tab.
     ENDIF.
+endif.
 
     "raise message if Material document No. is empty
     LOOP AT materialdocs INTO DATA(ls_materialdocs).

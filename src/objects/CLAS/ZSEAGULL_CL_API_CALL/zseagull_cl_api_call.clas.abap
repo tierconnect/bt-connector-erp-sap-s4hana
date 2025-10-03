@@ -130,7 +130,8 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
         lo_http_client->close(  ).
 
       CATCH cx_http_dest_provider_error.
-      CATCH cx_web_http_client_error.
+      return.
+      catch cx_web_http_client_error.
 
         RETURN.
     ENDTRY.
@@ -161,6 +162,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
         lo_http_client->close(  ).
 
       CATCH cx_http_dest_provider_error.
+            return.
       CATCH cx_web_http_client_error.
 
         RETURN.
@@ -339,6 +341,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
 
 
       CATCH cx_http_dest_provider_error.
+            return.
       CATCH cx_web_http_client_error.
         RETURN.
     ENDTRY.
@@ -459,6 +462,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
           lo_http_bearer_client->close(  ).
 
         CATCH cx_http_dest_provider_error.
+              return.
         CATCH cx_web_http_client_error.
           RETURN.
       ENDTRY.
