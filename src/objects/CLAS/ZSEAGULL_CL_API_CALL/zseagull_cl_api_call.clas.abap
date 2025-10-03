@@ -21,7 +21,7 @@ CLASS zseagull_cl_api_call DEFINITION
              mjahr(4)         TYPE c,
            END OF ty_print_info,
 
-            BEGIN OF ty_bearer_token,
+           BEGIN OF ty_bearer_token,
              access_token TYPE string,
              token_type   TYPE string,
              expires_in   TYPE i,
@@ -96,7 +96,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
 
         DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://havensightconsulting.am1.bartendercloud.com/api/librarian/spaces/1/files/search/' ).
 
-       DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
+        DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
 
         DATA(ls_label_data) = VALUE ty_label_data( searchfileattributetype = 1
                                                    filenamecontainsquery = '.btw'
@@ -132,6 +132,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
       CATCH cx_http_dest_provider_error.
       CATCH cx_web_http_client_error.
 
+        RETURN.
     ENDTRY.
   ENDMETHOD.
 
@@ -140,7 +141,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
 
 
 
-      get_bearer_token( IMPORTING ev_bearer_token = DATA(lv_string) ).
+    get_bearer_token( IMPORTING ev_bearer_token = DATA(lv_string) ).
     TRY.
         DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://havensightconsulting.am1.bartendercloud.com/api/printers/' ).
         DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
@@ -162,6 +163,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
       CATCH cx_http_dest_provider_error.
       CATCH cx_web_http_client_error.
 
+        RETURN.
     ENDTRY.
 
   ENDMETHOD.
@@ -253,7 +255,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
       pretty_name = /ui2/cl_json=>pretty_mode-camel_case
       format_output =  abap_true ).
 
-      get_bearer_token( IMPORTING ev_bearer_token = DATA(lv_string) ).
+    get_bearer_token( IMPORTING ev_bearer_token = DATA(lv_string) ).
 
     DATA(lt_mappings) = VALUE /ui2/cl_json=>name_mappings( ( abap = 'actiongroup' json = 'ActionGroup' )
                                                        ( abap = 'actions' json = 'Actions' )
@@ -338,7 +340,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
 
       CATCH cx_http_dest_provider_error.
       CATCH cx_web_http_client_error.
-
+        RETURN.
     ENDTRY.
   ENDMETHOD.
 
@@ -397,15 +399,15 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
 
   METHOD get_bearer_token.
 
-data: ls_bearer_token TYPE ty_bearer_token.
+    DATA: ls_bearer_token TYPE ty_bearer_token.
 
-DATA : lt_keys          TYPE TABLE FOR READ IMPORT zr_seagull_cred.
+    DATA : lt_keys          TYPE TABLE FOR READ IMPORT zr_seagull_cred.
 
-    lt_keys = VALUE #( ( %tky-%key-GrantType = 'password' ) ).
+    lt_keys = VALUE #( ( %tky-%key-granttype = 'password' ) ).
 
     READ ENTITIES OF zr_seagull_cred
      ENTITY zrseagullcred
-     ALL fields WITH value #( ( %tky-GrantType = 'password' ) )
+     ALL FIELDS WITH VALUE #( ( %tky-granttype = 'password' ) )
      RESULT DATA(lt_conn_cred)
      FAILED DATA(lt_failed)
      REPORTED DATA(lt_reported).
@@ -416,29 +418,29 @@ DATA : lt_keys          TYPE TABLE FOR READ IMPORT zr_seagull_cred.
           DATA(lo_http_bearer_dest) = cl_http_destination_provider=>create_by_url( CONV #( <fs_conn_cred>-destination ) ).
           DATA(lo_http_bearer_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_bearer_dest ).
 
-        cl_web_http_utility=>escape_url( EXPORTING unescaped = conv #( <fs_conn_cred>-Audience )
-        RECEIVING escaped = DATA(lv_escaped_audience) ).
+          cl_web_http_utility=>escape_url( EXPORTING unescaped = CONV #( <fs_conn_cred>-audience )
+          RECEIVING escaped = DATA(lv_escaped_audience) ).
 
-        cl_web_http_utility=>escape_url( EXPORTING unescaped = conv #( <fs_conn_cred>-ClientID )
-        RECEIVING escaped = DATA(lv_escaped_client_id) ).
+          cl_web_http_utility=>escape_url( EXPORTING unescaped = CONV #( <fs_conn_cred>-clientid )
+          RECEIVING escaped = DATA(lv_escaped_client_id) ).
 
-        cl_web_http_utility=>escape_url( EXPORTING unescaped = conv #( <fs_conn_cred>-ClientSecret )
-        RECEIVING escaped = DATA(lv_escaped_client_secret) ).
-
-
-        cl_web_http_utility=>escape_url( EXPORTING unescaped = conv #( <fs_conn_cred>-Username )
-                                          RECEIVING escaped = DATA(lv_escaped_username) ).
-
-        cl_web_http_utility=>escape_url( EXPORTING unescaped = conv #( <fs_conn_cred>-password )
-        RECEIVING escaped = DATA(lv_escaped_password) ).
+          cl_web_http_utility=>escape_url( EXPORTING unescaped = CONV #( <fs_conn_cred>-clientsecret )
+          RECEIVING escaped = DATA(lv_escaped_client_secret) ).
 
 
-        data(lv_fld_val) = 'grant_type=' && <fs_conn_cred>-GrantType
-                        && '&audience=' && lv_escaped_audience
-                        && '&client_id=' && lv_escaped_Client_Id
-                        && '&client_secret=' && lv_escaped_Client_Secret
-                        && '&username=' && lv_escaped_username
-                        && '&password=' && lv_escaped_Password.
+          cl_web_http_utility=>escape_url( EXPORTING unescaped = CONV #( <fs_conn_cred>-username )
+                                            RECEIVING escaped = DATA(lv_escaped_username) ).
+
+          cl_web_http_utility=>escape_url( EXPORTING unescaped = CONV #( <fs_conn_cred>-password )
+          RECEIVING escaped = DATA(lv_escaped_password) ).
+
+
+          DATA(lv_fld_val) = 'grant_type=' && <fs_conn_cred>-granttype
+                          && '&audience=' && lv_escaped_audience
+                          && '&client_id=' && lv_escaped_client_id
+                          && '&client_secret=' && lv_escaped_client_secret
+                          && '&username=' && lv_escaped_username
+                          && '&password=' && lv_escaped_password.
 
           lo_http_bearer_client->get_http_request(  )->set_text( lv_fld_val ).
 
@@ -448,9 +450,9 @@ DATA : lt_keys          TYPE TABLE FOR READ IMPORT zr_seagull_cred.
           DATA(lv_bearer_response) = lo_bearer_response->get_text(  ).
 
 
-        /ui2/cl_json=>deserialize( EXPORTING json = lv_bearer_response
-                                             pretty_name = /ui2/cl_json=>pretty_mode-camel_case
-                                   CHANGING data = ls_bearer_token ).
+          /ui2/cl_json=>deserialize( EXPORTING json = lv_bearer_response
+                                               pretty_name = /ui2/cl_json=>pretty_mode-camel_case
+                                     CHANGING data = ls_bearer_token ).
 
           ev_bearer_token = ls_bearer_token-access_token.
 
@@ -458,7 +460,7 @@ DATA : lt_keys          TYPE TABLE FOR READ IMPORT zr_seagull_cred.
 
         CATCH cx_http_dest_provider_error.
         CATCH cx_web_http_client_error.
-
+          RETURN.
       ENDTRY.
 
     ENDIF.
