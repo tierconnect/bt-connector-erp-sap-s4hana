@@ -4,7 +4,6 @@ CLASS zseagull_cl_api_call DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    INTERFACES if_oo_adt_classrun.
 
     TYPES: BEGIN OF ty_printer_dtl,
              printerid(100) TYPE c,
