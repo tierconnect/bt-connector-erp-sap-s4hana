@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "Seagull Label Print",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "Bartender Label Print"
+  },
+  "ui5AppDetails": {
+    "appId": "zseagulldocprint"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_088B8A32DCC13330C33769031B85EC0027F060F1_TM",
+    "semanticObject": "z_seagull_doc_prnt",
+    "action": "display",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_088B8A32DCC13330C33769031B85EC0027F060F1_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Bartender Label Print"
+      }
+    }
+  ]
+}

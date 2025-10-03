@@ -1,0 +1,35 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "An SAP Fiori application.",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "Seagull Connectivity"
+  },
+  "ui5AppDetails": {
+    "appId": "zseagullcred"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_D820509B461CA15B40B89F2172C7792D8FF90B58_TM",
+    "semanticObject": "z_seagull_cred",
+    "action": "display",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_D820509B461CA15B40B89F2172C7792D8FF90B58_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Seagull Connectivity",
+        "subtitle": "Bartender Label Print"
+      }
+    }
+  ]
+}

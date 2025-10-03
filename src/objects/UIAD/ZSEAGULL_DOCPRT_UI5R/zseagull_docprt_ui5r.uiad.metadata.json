@@ -1,0 +1,21 @@
+[
+ {
+  "table":"TADIR",
+  "data":
+  [
+   {
+    "PGMID":"R3TR",
+    "OBJECT":"UIAD",
+    "OBJ_NAME":"ZSEAGULL_DOCPRT_UI5R",
+    "SRCSYSTEM":"...",
+    "AUTHOR":"SAP_CUSTOMER",
+    "DEVCLASS":"ZSEAGULL_LABEL_PRINT",
+    "EDTFLAG":"X",
+    "CPROJECT":" L",
+    "MASTERLANG":"E",
+    "CREATED_ON":"2025-09-30",
+    "CHECK_DATE":"2025-09-30"
+   }
+  ]
+ }
+]

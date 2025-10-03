@@ -1,0 +1,60 @@
+[
+ {
+  "table":"ACMDCLSRC",
+  "data":
+  [
+   {
+    "DCLNAME":"ZR_SEAGULL_DOC_PRT",
+    "AS4LOCAL":"A",
+    "AS4USER":"SAP_CUSTOMER",
+    "AS4DATE":"2025-08-26",
+    "AS4TIME":"00:30:05",
+    "SOURCE":"@EndUserText.label: 'ZR_SEAGULL_DOC_PRT'\r\n@MappingRole: true\r\ndefine role ZR_SEAGULL_DOC_PRT {\r\n  grant select on ZR_SEAGULL_DOC_PRT\r\n  where TRUE;\r\n}",
+    "PARENTNAME":"",
+    "ABAP_LANGUAGE_VERSION":"5"
+   }
+  ]
+ },
+ {
+  "table":"ACMDCLSRCT",
+  "data":
+  [
+   {
+    "DCLNAME":"ZR_SEAGULL_DOC_PRT",
+    "DCLLANGUAGE":"E",
+    "AS4LOCAL":"A",
+    "DDTEXT":"Access Control for ZR_SEAGULL_DOC_PRT"
+   }
+  ]
+ },
+ {
+  "table":"TADIR",
+  "data":
+  [
+   {
+    "PGMID":"R3TR",
+    "OBJECT":"DCLS",
+    "OBJ_NAME":"ZR_SEAGULL_DOC_PRT",
+    "KORRNUM":"",
+    "SRCSYSTEM":"...",
+    "AUTHOR":"SAP_CUSTOMER",
+    "SRCDEP":"",
+    "DEVCLASS":"ZSEAGULL_LABEL_PRINT",
+    "GENFLAG":"",
+    "EDTFLAG":"",
+    "CPROJECT":" L",
+    "MASTERLANG":"E",
+    "VERSID":"",
+    "PAKNOCHECK":"",
+    "OBJSTABLTY":"",
+    "COMPONENT":"",
+    "CRELEASE":"",
+    "DELFLAG":"",
+    "TRANSLTTXT":"",
+    "CREATED_ON":"2025-08-26",
+    "CHECK_DATE":"2025-08-26",
+    "CHECK_CFG":""
+   }
+  ]
+ }
+]

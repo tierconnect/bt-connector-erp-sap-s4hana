@@ -1,0 +1,20 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Service Binding for ZUI_SEAGULL_PRT_CFG_O4",
+    "originalLanguage": "en"
+  },
+  "bindingType": "ODATA V4",
+  "bindingTypeCategory": "ui",
+  "services": [
+    {
+      "name": "ZUI_SEAGULL_PRT_CFG_O4",
+      "versions": [
+        {
+          "serviceVersion": "1.0.0",
+          "serviceDefinition": "ZUI_SEAGULL_PRT_CFG_O4"
+        }
+      ]
+    }
+  ]
+}

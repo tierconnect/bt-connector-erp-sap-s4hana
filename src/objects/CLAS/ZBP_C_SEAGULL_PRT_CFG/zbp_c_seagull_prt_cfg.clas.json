@@ -1,0 +1,10 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Projection Behavior Definition for ZC_SEAGULL_PRT_CFG",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "category": "behaviorClass",
+  "fixPointArithmetic": true
+}

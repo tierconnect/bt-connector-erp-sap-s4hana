@@ -1,0 +1,20 @@
+[
+ {
+  "table":"TADIR",
+  "data":
+  [
+   {
+    "PGMID":"R3TR",
+    "OBJECT":"CLAS",
+    "OBJ_NAME":"ZBP_C_SEAGULL_PRT_CFG",
+    "SRCSYSTEM":"...",
+    "AUTHOR":"SAP_CUSTOMER",
+    "DEVCLASS":"ZSEAGULL_LABEL_PRINT",
+    "CPROJECT":" L",
+    "MASTERLANG":"E",
+    "CREATED_ON":"2025-08-26",
+    "CHECK_DATE":"2025-08-26"
+   }
+  ]
+ }
+]

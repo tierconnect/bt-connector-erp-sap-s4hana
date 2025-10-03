@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "Bartender Print Configuration",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "Bartender Print Configuration"
+  },
+  "ui5AppDetails": {
+    "appId": "zseagullprtcfg"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_D0B3186CD81CDB10E206261AE610726E5C997274_TM",
+    "semanticObject": "z_seagull_prnt_config",
+    "action": "display",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_D0B3186CD81CDB10E206261AE610726E5C997274_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Bartender Print Configuration"
+      }
+    }
+  ]
+}

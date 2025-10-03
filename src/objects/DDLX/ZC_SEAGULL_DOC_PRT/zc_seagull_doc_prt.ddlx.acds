@@ -1,0 +1,238 @@
+@Metadata.layer: #CORE
+@UI.headerInfo.title.type: #STANDARD
+@UI.headerInfo.title.value: 'Mblnr'
+@UI.headerInfo.description.type: #STANDARD
+@UI.headerInfo.description.value: 'Mblnr'
+@UI.presentationVariant: [{ visualizations: [{ type: #AS_LINEITEM }] }]
+annotate view ZC_SEAGULL_DOC_PRT with
+{
+  @UI.facet: [ {
+      id: 'idIdentification',
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Material Document Print',
+      position: 10
+    } ]
+
+  @UI.hidden: true
+  OrderUUID;
+
+  
+   @EndUserText.label: 'Material Document No.'
+  @UI.identification: [ {
+    position: 20,
+    label: 'Material Document No.*'
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity:
+                {name: 'ZSEAGULL_I_MATDOCS' , element: 'MaterialDocument' }
+                }]
+
+  @UI.lineItem: [ {
+    position: 10 ,
+    label: 'Material Document No.'
+  } ]
+  @UI.selectionField: [ {
+    position: 10
+  } ]
+  Mblnr;
+
+  @EndUserText.label: 'Material Document Year'
+  @UI.identification: [ {
+    position: 40 ,
+    label: 'Material Document Year *'
+  } ]
+  @UI.lineItem: [ {
+    position: 20 ,
+    label: 'Material Document Year'
+  } ]
+  @UI.selectionField: [ {
+    position: 20
+  } ]
+  Mjahr;
+
+  @EndUserText.label: 'No. of Copies'
+  @UI.identification: [ {
+    position: 80,
+    label: 'No. of Copies *'
+  } ]
+  @UI.lineItem: [ {
+    position: 30 ,
+    label: 'No. of Copies'
+  } ]
+  @UI.selectionField: [ {
+    position: 30
+  } ]
+  NoOfLabels;
+
+  @EndUserText.label: 'Label Format'
+  @UI.identification: [ {
+    position: 60 ,
+    label: 'Label Format *'
+  } ]
+  
+  @Consumption.valueHelpDefinition: [{ entity:
+                { name: 'ZSEAGULL_LABELFORMAT_VH' , element: 'labelformat' }
+                }]
+                
+  @UI.lineItem: [ {
+    position: 40 ,
+    label: 'Label Format'
+  } ]
+  @UI.selectionField: [ {
+    position: 40
+  } ]
+  LabelFormat;
+
+  @EndUserText.label: 'Printer Name'
+  @UI.identification: [ {
+    position: 100 ,
+    label: 'Printer Name *'
+  } ]
+
+  @Consumption.valueHelpDefinition: [{ entity:
+                { name: 'ZSEAGULL_PRINTER_VH' , element: 'printerid' }
+                }]
+
+  @UI.lineItem: [ {
+    position: 50 ,
+    label: 'Printer Name'
+  } ]
+  @UI.selectionField: [ {
+    position: 50
+  } ]
+  PrinterName;
+
+  @EndUserText.label: 'Print Mode'
+  @UI.identification: [ {
+    position: 70 ,
+    label: 'Print Mode'
+  } ]
+  
+  @Consumption.valueHelpDefinition: [{ entity:
+                {name: 'ZSEAGULL_PRINTMODE_VH' , element: 'print_mode' }
+                }]
+                
+  @UI.lineItem: [ {
+    position: 60 ,
+    label: 'Print Mode'
+  } ]
+  @UI.selectionField: [ {
+    position: 60
+  } ]
+  PrintMode;
+
+  @UI.identification: [ {
+    position: 30
+  } ]
+  @UI.lineItem: [ {
+    position: 70
+  } ]
+  @UI.selectionField: [ {
+    position: 90
+  } ]
+  CreatedBy;
+
+  @UI.identification: [ {
+    position: 50
+  } ]
+  @UI.lineItem: [ {
+    position: 80
+  } ]
+  @UI.selectionField: [ {
+    position: 100
+  } ]
+  CreatedAt;
+
+  @EndUserText.label: 'Print Response Code'
+  @UI.identification: [ {
+    position: 90 ,
+    label: 'Print Response Code'
+  } ]
+  
+  @Consumption.valueHelpDefinition: [{ entity:
+                {name: 'ZSEAGULL_PRINTMODE_VH' , element: 'print_response_code' }
+                }]
+                
+  @UI.lineItem: [ {
+    position: 90 ,
+    label: 'Print Response Code'
+  } ]
+  @UI.selectionField: [ {
+    position: 70
+  } ]
+  PrintResponseCode;
+
+  @EndUserText.label: 'Print Response Message'
+  @UI.identification: [ {
+    position: 110 ,
+    label: 'Print Response Message'
+  } ]
+  @UI.lineItem: [ {
+    position: 100 ,
+    label: 'Print Response Message'
+  } ]
+  @UI.selectionField: [ {
+    position: 80
+  } ]
+  PrintResponseMsg;
+
+
+  @UI.lineItem: [{ type: #FOR_ACTION,
+                    dataAction: 'printreprint',
+                    label: 'Print',
+                    position: 1 }]
+
+  @UI.identification: [ { type: #FOR_ACTION,
+                          dataAction: 'printreprint',
+                          label: 'Print',
+                          position: 100 }]
+
+  //  @UI.identification: [ {
+  //    position: 110
+  //  } ]
+  //  @UI.lineItem: [ {
+  //    position: 100
+  //  } ]
+  @UI.selectionField: [ {
+    position: 110
+  } ]
+  @UI.hidden: true
+  LastChangedBy;
+
+  @UI.identification: [ {
+    position: 120
+  } ]
+  @UI.lineItem: [ {
+    position: 120
+  } ]
+  @UI.selectionField: [ {
+    position: 120
+  } ]
+  @UI.hidden: true
+  LastChangedAt;
+
+  @UI.identification: [ {
+    position: 130
+  } ]
+  @UI.lineItem: [ {
+    position: 130
+  } ]
+  @UI.selectionField: [ {
+    position: 130
+  } ]
+  @UI.hidden: true
+  LocalLastChangedAt;
+  
+  @EndUserText.label: '_BaseEntity'
+  @UI.identification: [ {
+    position: 150 , 
+    label: '_BaseEntity'
+  } ]
+  @UI.lineItem: [ {
+    position: 150 , 
+    label: '_BaseEntity'
+  } ]
+  @UI.selectionField: [ {
+    position: 150 
+  } ]
+  _BaseEntity;
+}
