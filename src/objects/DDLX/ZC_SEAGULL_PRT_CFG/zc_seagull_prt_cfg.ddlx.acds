@@ -4,6 +4,7 @@
 @UI.headerInfo.description.type: #STANDARD
 @UI.headerInfo.description.value: 'Plant'
 @UI.presentationVariant: [{ visualizations: [{ type: #AS_LINEITEM }] }]
+@Search.searchable: true
 annotate view ZC_SEAGULL_PRT_CFG with
 {
   @UI.facet: [ {
@@ -97,14 +98,14 @@ annotate view ZC_SEAGULL_PRT_CFG with
 
   NoOfLabels;
   
-  @EndUserText.label: 'Printer Name'
+  @EndUserText.label: 'Printer Name' 
   @UI.identification: [ {
     position: 70 , 
     label: 'Printer Name'
   } ]
   @Consumption.valueHelpDefinition: [{ entity:
                 { name: 'ZSEAGULL_PRINTER_VH' , element: 'printerid' }
-                }]
+                }]   
   @UI.lineItem: [ {
     position: 70 , 
     label: 'Printer Name'
@@ -112,6 +113,10 @@ annotate view ZC_SEAGULL_PRT_CFG with
   @UI.selectionField: [ {
     position: 70 
   } ]
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.70
+  @Search.ranking: #HIGH
+
   PrinterName;
   
   @UI.identification: [ {

@@ -36,7 +36,9 @@ CLASS zseagull_cl_api_call DEFINITION
 
       get_printer_dtl EXPORTING et_printer_dtl TYPE tt_printer_dtl,
 
-      get_label_format EXPORTING et_label_format TYPE tt_labelformat_dtl,
+      get_label_format IMPORTING iv_limit        TYPE int8 OPTIONAL
+                                 iv_skip         TYPE int8 OPTIONAL
+                       EXPORTING et_label_format TYPE tt_labelformat_dtl,
 
       post_print_info IMPORTING is_print_info TYPE ty_print_info
                       EXPORTING ev_code       TYPE i
@@ -55,7 +57,7 @@ ENDCLASS.
 
 
 
-CLASS zseagull_cl_api_call IMPLEMENTATION.
+CLASS ZSEAGULL_CL_API_CALL IMPLEMENTATION.
 
 
   METHOD get_label_format.
@@ -64,8 +66,8 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
              searchfileattributetype(1) TYPE c,
              filenamecontainsquery(4)   TYPE c,
              metadatakeysexistquery(1)  TYPE c,
-             limit(2)                   TYPE c,
-             skip(2)                    TYPE c,
+             limit(1)      TYPE c,
+             skip(1)                       TYPE c,
            END OF ty_label_data,
 
            BEGIN OF ty_searchresult,
@@ -79,74 +81,99 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
              searchresultfilematches TYPE tt_searchresult,
            END OF ty_label_dtl.
 
-    DATA: ls_label_dtl TYPE ty_label_dtl.
+    DATA: ls_label_dtl TYPE ty_label_dtl,
+          lv_limit     TYPE int8,
+          lv_skip      TYPE int8.
 
 
     DATA: lo_http_response TYPE REF TO if_web_http_response.
 
     get_bearer_token( IMPORTING ev_bearer_token = DATA(lv_string) ).
-    TRY.
+
+    DATA(lt_mappings) = VALUE /ui2/cl_json=>name_mappings( ( abap = 'searchfileattributetype' json = 'SearchFileAttributeType' )
+                                                       ( abap = 'filenamecontainsquery' json = 'FileNameContainsQuery' )
+                                                       ( abap = 'metadatakeysexistquery' json = 'MetadataKeysExistQuery' )
+                                                       ( abap = 'limit' json = 'Limit' )
+                                                       ( abap = 'skip' json = 'Skip' ) ).
+
+    DO.
+
+      TRY.
+          DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://havensightconsulting.am1.bartendercloud.com/api/librarian/spaces/1/files/search/' ).
+
+          "DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://am1.bartendercloud.com/api/librarian/spaces/1/folders' ).
 
 
-        DATA(lt_mappings) = VALUE /ui2/cl_json=>name_mappings( ( abap = 'searchfileattributetype' json = 'SearchFileAttributeType' )
-                                                           ( abap = 'filenamecontainsquery' json = 'FileNameContainsQuery' )
-                                                           ( abap = 'metadatakeysexistquery' json = 'MetadataKeysExistQuery' )
-                                                           ( abap = 'limit' json = 'Limit' )
-                                                           ( abap = 'skip' json = 'Skip' ) ).
+          DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
 
-        DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://havensightconsulting.am1.bartendercloud.com/api/librarian/spaces/1/files/search/' ).
+          DATA(ls_label_data) = VALUE ty_label_data( searchfileattributetype = 1
+                                                     filenamecontainsquery = '.btw'
+                                                     metadatakeysexistquery = abap_false
+                                                     limit = lv_limit
+                                                     skip = lv_skip ).
 
-        DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
+          DATA(lv_json) = /ui2/cl_json=>serialize( data = ls_label_data
+                                                   pretty_name = abap_true
+                                                   format_output =  abap_true
+                                                   name_mappings = lt_mappings ).
 
-        DATA(ls_label_data) = VALUE ty_label_data( searchfileattributetype = 1
-                                                   filenamecontainsquery = '.btw'
-                                                   metadatakeysexistquery = abap_false
-                                                   limit = 0
-                                                   skip = 0 ).
+          lo_http_client->get_http_request(  )->set_authorization_bearer( i_bearer = lv_string ).
 
-        DATA(lv_json) = /ui2/cl_json=>serialize( data = ls_label_data
-                                                 pretty_name = abap_true
-                                                 format_output =  abap_true
-                                                 name_mappings = lt_mappings ).
+          lo_http_client->get_http_request(  )->set_header_fields( VALUE #(  ( name = if_web_http_header=>content_type value = if_web_http_header=>accept_application_json )
+                                                                             ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json ) ) ).
 
-        lo_http_client->get_http_request(  )->set_authorization_bearer( i_bearer = lv_string ).
+          lo_http_client->get_http_request(  )->set_text( lv_json ).
 
-        lo_http_client->get_http_request(  )->set_header_fields( VALUE #(  ( name = if_web_http_header=>content_type value = if_web_http_header=>accept_application_json )
-                                                                           ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json ) ) ).
+          DATA(lo_response) = lo_http_client->execute( if_web_http_client=>post ).
 
-        lo_http_client->get_http_request(  )->set_text( lv_json ).
+          DATA(lv_response) = lo_response->get_text(  ).
 
-        DATA(lo_response) = lo_http_client->execute( if_web_http_client=>post ).
+          /ui2/cl_json=>deserialize( EXPORTING json = lv_response
+                                               pretty_name = /ui2/cl_json=>pretty_mode-camel_case
+                                     CHANGING data = ls_label_dtl ).
+          lo_http_client->close(  ).
 
-        DATA(lv_response) = lo_response->get_text(  ).
+          IF ls_label_dtl-searchresultfilematches IS INITIAL.
+            EXIT.
+          ELSE.
+            et_label_format = VALUE #( BASE et_label_format
+                                       FOR <fs_label_dtl> IN ls_label_dtl-searchresultfilematches ( labelformat = <fs_label_dtl>-uncpath && <fs_label_dtl>-name ) ).
+          ENDIF.
 
-        /ui2/cl_json=>deserialize( EXPORTING json = lv_response
-                                             pretty_name = /ui2/cl_json=>pretty_mode-camel_case
-                                   CHANGING data = ls_label_dtl ).
+          lv_skip = lv_skip + lines( ls_label_dtl-searchresultfilematches ).
 
+        CATCH cx_http_dest_provider_error.
+          RETURN.
+        CATCH cx_web_http_client_error.
+          RETURN.
+      ENDTRY.
 
-        et_label_format = VALUE #( FOR <fs_label_dtl> IN ls_label_dtl-searchresultfilematches ( labelformat = <fs_label_dtl>-uncpath && <fs_label_dtl>-name ) ).
-
-        lo_http_client->close(  ).
-
-      CATCH cx_http_dest_provider_error.
-      return.
-      catch cx_web_http_client_error.
-
-        RETURN.
-    ENDTRY.
+    ENDDO.
   ENDMETHOD.
 
 
   METHOD get_printer_dtl.
 
-
+data: lt_printer_dtl tYPE tt_printer_dtl.
 
     get_bearer_token( IMPORTING ev_bearer_token = DATA(lv_string) ).
+
     TRY.
         DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://havensightconsulting.am1.bartendercloud.com/api/printers/' ).
         DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
-
+*clear lv_string.
+*lv_string = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IkY1RTNDMjlGN0ZEMkNDNEMzNTZBQkVFN0U4N0UxNTQxN0NFQTQ5MzFSUzI1NiIsInR5cCI6I' &&
+*'mF0K2p3dCIsIng1dCI6IjllUENuM19TekV3MWFyN242SDRWUVh6cVNURSJ9.eyJuYmYiOjE3NjE4NzkxOTcsImV4cCI6MTc2Mjc0MzE5NywiaXNzIjoi' &&
+*'aHR0cHM6Ly9hdXRoLmFtMS5iYXJ0ZW5kZXJjbG91ZC5jb20iLCJhdWQiOiJodHRwczovL0JhclRlbmRlckNsb3VkU2VydmljZUFwaSIsImNsaWVudF9pZC' &&
+*'I6IjJlNDUyMmZjLWE1NTEtNDE5Ni1hN2FkLWU5ZWEyYjZlNmU5YSIsInN1YiI6ImY4NzA0MDgxLTg1ZmMtNGFkNC1iOWVkLTQ3NmUxN2EwMjkxOCIsImF' &&
+*'1dGhfdGltZSI6MTc2MTg3OTE5NywiaWRwIjoibG9jYWwiLCJodHRwczovL0JhclRlbmRlckNsb3VkLmNvbS9UZW5hbnRJRCI6ImM5ZDRiYjE5LWY0OGYt' &&
+*'NDY2Zi04M2QxLTJhMmI3MmRkNzk0OCIsImh0dHBzOi8vQmFyVGVuZGVyQ2xvdWQuY29tL1VzZXJJRCI6IjIxODU5MjA1LTYyZjUtNGMxMC04OTM5LTI4OGU4M' &&
+*'TQ3OTVkNSIsImh0dHBzOi8vQmFyVGVuZGVyQ2xvdWQuY29tL0RhdGFDZW50ZXJVUkkiOiJodHRwczovL2FtMS5iYXJ0ZW5kZXJjbG91ZC5jb20vIiwianRpIj' &&
+*'oiM0JCRjBDMkVBRjFFRUNGQUMxN0IzQUIwMzRFMkQxNjkiLCJpYXQiOjE3NjE4NzkxOTcsInNjb3BlIjpbIkJhclRlbmRlclNlcnZpY2VBcGkiLCJvcGVuaWQiLC' &&
+*'Jwcm9maWxlIiwib2ZmbGluZV9hY2Nlc3MiXSwiYW1yIjpbInB3ZCJdfQ.Tt5K3a2pumSHHNp7VDRbZxjhPJse-X17sZnKTdrtg_GFvshdl7f2Odm9xzLaNHbI' &&
+*'HH0sTLK4HZFt1dcEv3YqpUvkWvWX-S7RfodPeW4vV1KDE-OqvY0xpMmPOyKB6MYhFywlH_vWTWAxyuN4iiWOsCW-jkd6y0iZ0wmE3kLlbUL1SS3-bGpJOyiIt7' &&
+*'t76qQ2n-60vePV0UZAHGj7qjDyBPQ2P_rhT9kKPBiO24NiZIrQ79ILQvyhJi0acI-gppJHbXlV-K_uPRdvi0QbtGIYW26bEqXPgF284g9q_lTa3FzuW7Y6g9uWC' &&
+*'z9rhmRYIlsBEs7rejveQSVAwHSsINUppQ'.
         lo_http_client->get_http_request(  )->set_authorization_bearer( i_bearer = lv_string ).
         lo_http_client->get_http_request(  )->set_header_fields( VALUE #(  ( name = if_web_http_header=>content_type value = if_web_http_header=>accept_application_json )
                                                                            ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json ) ) ).
@@ -162,13 +189,13 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
         lo_http_client->close(  ).
 
       CATCH cx_http_dest_provider_error.
-            return.
+        RETURN.
       CATCH cx_web_http_client_error.
 
         RETURN.
     ENDTRY.
-
   ENDMETHOD.
+
 
   METHOD post_print_info.
 
@@ -341,7 +368,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
 
 
       CATCH cx_http_dest_provider_error.
-            return.
+        RETURN.
       CATCH cx_web_http_client_error.
         RETURN.
     ENDTRY.
@@ -399,6 +426,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
 
   METHOD get_bearer_token.
 
@@ -462,7 +490,7 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
           lo_http_bearer_client->close(  ).
 
         CATCH cx_http_dest_provider_error.
-              return.
+          RETURN.
         CATCH cx_web_http_client_error.
           RETURN.
       ENDTRY.
@@ -470,5 +498,4 @@ CLASS zseagull_cl_api_call IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
-
 ENDCLASS.
