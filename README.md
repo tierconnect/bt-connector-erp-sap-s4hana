@@ -55,7 +55,8 @@ The BarTender Print Connector for S/4HANA Cloud application is developed in ABAP
 
 ## Known Issues
 
-No known issues.
+- Label Format and Printer selection dialogs are limited to 500 records. If your tenant has more than 500 label formats or printers, they may not show in the dialogs.
+- BarTender Cloud endpoint URL is hard-coded in ABAP class in 3 locations.
 
 ### [Uninstalling the Plugin](/documentation/uninstall/README.md)
 
