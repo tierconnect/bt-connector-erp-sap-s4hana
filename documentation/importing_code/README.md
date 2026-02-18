@@ -12,7 +12,6 @@ The following procedure describes the process to connect to the repository on on
 ## Procedure
 In the SAP Fiori launchpad of your SAP S/4HANA Cloud Public Edition development system, search for the app called **Git-Enabled CTS**. To open the gCTS app, select the **Git-Enabled CTS** tile.
 
-
 To provide credentials for the Git provider of the repository containing the extension, click the **key** icon (Manage settings of current user).
 ![image](/documentation/images/loio596bf27226a94ca09495b14b966e1371_LowRes.png)
 
