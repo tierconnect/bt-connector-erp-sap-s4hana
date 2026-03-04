@@ -3,20 +3,22 @@
 ## Prerequisites
 
 **NOTE**
-In order to extend the code in this sample, you will need the Eclipse IDE with ABAP Development Tools installed.
+
+In order to extend the code in this sample, you will need to install the Eclipse IDE with ABAP Development Tools.
 
 ## Procedure
-In the Eclipse IDE, select **File** > **New** > **ABAP Cloud Project**.
 
-Enter the URL of your S/4HANA Public Cloud Development instance and click Next. You will be asked to Logon to your S/4HANA instance.
+1. In the Eclipse IDE, select **File** > **New** > **ABAP Cloud Project**.
 
-Enter a Project Name and click Finish.
+2. Enter the URL of your S/4HANA Public Cloud Development instance and click **Next**. You will be asked to Logon to your S/4HANA instance.
 
-Expand the **ZPARTNER** package. The sample code is in the **ZSEAGULL_LABEL_PRINT** package.
+3. Enter a Project Name and click **Finish**.
 
-See the **ZSEAGULL_CL_API_CALL** class for sample code to submit a Print request to the BarTender Cloud REST API
+4. Expand the ZPARTNER package. The sample code is in the ZSEAGULL_LABEL_PRINT package.
 
-The sample code retrieves connection information from the **ZR_SEAGULL_CRED** view. The information in this view can be managed from within the SAP UI.
+5. See the ZSEAGULL_CL_API_CALL class for sample code to submit a Print request to the BarTender Cloud REST API.
+
+6. The sample code retrieves connection information from the ZR_SEAGULL_CRED view. The information in this view can be managed from within the SAP UI.
 
 The sample code demonstrates serializing a database view to JSON, such as the Material Document Header and Item view in the sample, and submits a print request to the API by passing in the serialized JSON as a database override. See the **post_print_info** method for sample.
 
@@ -35,5 +37,5 @@ Paste in your sample JSON data from the debugger earlier, and click **Next**.
 
 Click **Next** and then **Finish**. The JSON database fields are now available for use in your Label Design.
 
-The default database name is **JSON** and can be changed by right-clicking the **Database Fields** option and selecting **Database Connection Setup...** <br>
-You may optionally change the name for the connection. This database name is used in the print request on line 321 in the **ZSEAGULL_CL_API_CALL** class.
+The default database name is JSON and can be changed by right-clicking the **Database Fields** option and selecting **Database Connection Setup...** <br>
+You may optionally change the name for the connection. This database name is used in the print request on line 321 in the ZSEAGULL_CL_API_CALL class.
