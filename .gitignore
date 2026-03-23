@@ -1,0 +1,142 @@
+# Operating System Files
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+*.swo
+*~
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+
+## Linux
+.directory
+
+# IDE & Editor Files
+## VS Code
+.vscode/
+*.code-workspace
+.history/
+.vscode-test
+
+## IntelliJ IDEA / WebStorm / PhpStorm
+.idea/
+*.iml
+*.iws
+*.ipr
+.gradle/
+*.jks
+
+## Eclipse
+.classpath
+.project
+.settings/
+bin/
+.recommenders/
+
+## Visual Studio
+.vs/
+.vscode/
+*.sln.DotSettings
+*.user
+
+## Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+## Atom
+.atom/
+.remote-sync.json
+
+## Vim
+*.vim-settings
+*.swp
+*.swo
+
+## Other editors
+*.bak
+*.tmp
+*~
+
+# Node & Package Managers
+node_modules/
+npm-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.npmrc
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# SAP/ABAP Specific
+*.ctrl
+*.sap
+*.abap
+.abapExtensionCache
+*.acx
+
+# Build & Distribution
+dist/
+build/
+*.zip
+*.tar.gz
+*.rar
+
+# Temporary Files
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# OS Generated Files
+.DS_Store*
+._*
+.Thumbs.db
+
+# Archive Files
+*.7z
+*.gz
+*.rar
+*.tar
+*.zip
+
+# Compiled Files
+*.class
+*.jar
+*.war
+*.ear
+*.exe
+*.dll
+
+# Dependencies
+vendor/
+Gemfile.lock
+
+# IDE Caches
+.cache/
+*.cache

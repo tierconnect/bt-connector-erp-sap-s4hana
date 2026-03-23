@@ -1,0 +1,80 @@
+name: Canary Release - Generate Source Archive
+
+on:
+  push:
+    tags:
+      - '**'
+
+jobs:
+  check-canary-branch:
+    runs-on: ubuntu-latest
+    outputs:
+      is-canary: ${{ steps.check.outputs.is-canary }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if tag is from canary branch
+        id: check
+        run: |
+          # Get all branches that contain this tag
+          BRANCHES=$(git branch -r --contains ${{ github.ref }} | grep -E "origin/canary/")
+          
+          if [ -n "$BRANCHES" ]; then
+            echo "is-canary=true" >> $GITHUB_OUTPUT
+            echo "Tag is from canary branch: $BRANCHES"
+          else
+            echo "is-canary=false" >> $GITHUB_OUTPUT
+            echo "Tag is not from a canary branch"
+          fi
+
+  create-release:
+    needs: check-canary-branch
+    if: needs.check-canary-branch.outputs.is-canary == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get tag name
+        id: tag
+        run: echo "tag-name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create source archive
+        run: |
+          # Build exclude patterns from .gitignore and .releaseignore
+          EXCLUDE_PATTERNS=""
+          
+          # Add patterns from .gitignore (excluding comments and empty lines)
+          if [ -f .gitignore ]; then
+            while IFS= read -r pattern; do
+              # Skip comments and empty lines
+              if [[ ! "$pattern" =~ ^# ]] && [ -n "$pattern" ]; then
+                EXCLUDE_PATTERNS="$EXCLUDE_PATTERNS -x \"$pattern\""
+              fi
+            done < .gitignore
+          fi
+          
+          # Add patterns from .releaseignore (excluding comments and empty lines)
+          if [ -f .releaseignore ]; then
+            while IFS= read -r pattern; do
+              # Skip comments and empty lines
+              if [[ ! "$pattern" =~ ^# ]] && [ -n "$pattern" ]; then
+                EXCLUDE_PATTERNS="$EXCLUDE_PATTERNS -x \"$pattern\""
+              fi
+            done < .releaseignore
+          fi
+          
+          # Create zip file with source code
+          eval "zip -r \"canary-source-${{ steps.tag.outputs.tag-name }}.zip\" src/ documentation/ README.md $EXCLUDE_PATTERNS"
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: canary-source-${{ steps.tag.outputs.tag-name }}.zip
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
