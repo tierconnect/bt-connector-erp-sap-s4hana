@@ -78,3 +78,6 @@ jobs:
           prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  jira-release:
+    uses: tierconnect/mojix-github-library/.github/workflows/jira-component-release.yml@main
+    secrets: inherit
