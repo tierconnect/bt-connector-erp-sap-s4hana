@@ -79,5 +79,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   jira-release:
+    needs: check-canary-branch
+    if: needs.check-canary-branch.outputs.is-canary == 'true'
     uses: tierconnect/mojix-github-library/.github/workflows/jira-component-release.yml@main
     secrets: inherit
