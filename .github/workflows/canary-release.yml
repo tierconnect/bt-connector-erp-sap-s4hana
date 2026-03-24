@@ -44,31 +44,31 @@ jobs:
 
       - name: Create source archive
         run: |
-          # Build exclude patterns from .gitignore and .releaseignore
-          EXCLUDE_PATTERNS=""
-          
+          # Build exclude argument array from .gitignore and .releaseignore
+          EXCLUDE_ARGS=()
+
           # Add patterns from .gitignore (excluding comments and empty lines)
           if [ -f .gitignore ]; then
             while IFS= read -r pattern; do
               # Skip comments and empty lines
               if [[ ! "$pattern" =~ ^# ]] && [ -n "$pattern" ]; then
-                EXCLUDE_PATTERNS="$EXCLUDE_PATTERNS -x \"$pattern\""
+                EXCLUDE_ARGS+=(-x "$pattern")
               fi
             done < .gitignore
           fi
-          
+
           # Add patterns from .releaseignore (excluding comments and empty lines)
           if [ -f .releaseignore ]; then
             while IFS= read -r pattern; do
               # Skip comments and empty lines
               if [[ ! "$pattern" =~ ^# ]] && [ -n "$pattern" ]; then
-                EXCLUDE_PATTERNS="$EXCLUDE_PATTERNS -x \"$pattern\""
+                EXCLUDE_ARGS+=(-x "$pattern")
               fi
             done < .releaseignore
           fi
-          
+
           # Create zip file with source code
-          eval "zip -r \"canary-source-${{ steps.tag.outputs.tag-name }}.zip\" src/ documentation/ README.md $EXCLUDE_PATTERNS"
+          zip -r "canary-source-${{ steps.tag.outputs.tag-name }}.zip" src/ documentation/ README.md "${EXCLUDE_ARGS[@]}"
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
