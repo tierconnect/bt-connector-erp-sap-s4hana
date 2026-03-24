@@ -12,41 +12,49 @@ The following procedure describes the process for connecting to the repository o
 
 ## Procedure
 
-1. In the SAP Fiori launchpad of your SAP S/4HANA Cloud Public Edition development system, search for the app called Git-Enabled CTS. To open the gCTS app, select the **Git-Enabled CTS** tile.
+1. Go to the [BarTender Customer Portal](https://portal.seagullscientific.com/Home/Landing).
 
-2. Click the **key** icon (Manage settings of current user) to provide credentials for the Git provider of the repository containing the extension. ![image](/documentation/images/loio596bf27226a94ca09495b14b966e1371_LowRes.png)
+2. In the BarTender Download Center, click **Downloads**.
 
-3. Click **Create Credentials**. ![image](/documentation/images/loioc3fe6a1aff5a49d485b8bb84e2123f02_LowRes.png)
+3. On the Download BarTender Cloud Tools page, click **Download SAP Connector** to download the zip file.
 
-4. Enter the information as shown below, including the token provided to you by Seagull Software, then click **Save**. ![image](/documentation/images/loio59a5125e12444083a31bbd611b5af268_LowRes.png)
+4. Go to the destination folder (usually Downloads), unzip the download, and upload the reference code to your Git repository.
 
-5. Click **Save** to confirm you want to save the credentials.
+5. In the SAP Fiori launchpad of your SAP S/4HANA Cloud Public Edition development system, search for the app called Git-Enabled CTS. To open the gCTS app, select the **Git-Enabled CTS** tile.
+
+6. Click the **key** icon (Manage settings of current user) to provide credentials for the Git provider of the repository containing the extension. ![image](/documentation/images/loio596bf27226a94ca09495b14b966e1371_LowRes.png)
+
+7. Click **Create Credentials**. ![image](/documentation/images/loioc3fe6a1aff5a49d485b8bb84e2123f02_LowRes.png)
+
+8. Enter the information as shown below, including the token provided to you by Seagull Software, then click **Save**. ![image](/documentation/images/loio59a5125e12444083a31bbd611b5af268_LowRes.png)
+
+9. Click **Save** to confirm you want to save the credentials.
 
    ![image](/documentation/images/loio5066f2675f4142aeba48f2f86069a126_LowRes.png)
 
-6. Click **Close** if gCTS can validate the authentication of the specified user. The Git user name displays in the Endpoint User column. ![image](/documentation/images/loioa8310d4e27314dd09dd1568913ceefce_LowRes.png)
+10. Click **Close** if gCTS can validate the authentication of the specified user. The Git user name displays in the Endpoint User column. ![image](/documentation/images/loioa8310d4e27314dd09dd1568913ceefce_LowRes.png)
 
-7. In the gCTS app, click **Create**. ![image](/documentation/images/loio1ef5be9d1bc1414f8e01164596b73caa_LowRes.png)
+11. In the gCTS app, click **Create**. ![image](/documentation/images/loio1ef5be9d1bc1414f8e01164596b73caa_LowRes.png)
 
-8. Enter the URL of the repository and select the value help in the vSID field. The Description is derived from the URL.
+12. Enter the URL of the repository and select the value help in the vSID field. The Description is derived from the URL.
 
    ![image](/documentation/images/loiob0abd1e8245c48c1bda8ccd831579ac9_LowRes.png)
 
-9. Select **1GT**.
+13. Select **1GT**.
 
    ![image](/documentation/images/loioa4322ca3590941dd80706a75ff6cb481_LowRes.png)
 
-10. Select **Provided** as the Role of the repository.
+14. Select **Provided** as the Role of the repository.
 
     *Caution:* It is important that you select the **Provided** role to be able to pull changes from remote.
 
     ![image](/documentation/images/loioa48cb66084fb4f14832f3dda223ea00f_LowRes.png)
 
-11. Select the correct Type.
+15. Select the correct Type.
 
     ![image](/documentation/images/loio9e677d313922492aaabd9c787754c3cd_LowRes.png)
 
-12. Leave the Visibility setting as Public, and click **Save**.
+16. Leave the Visibility setting as Public, and click **Save**.
 
     ![image](/documentation/images/loiocac5b91e6b99484cb4244483978a1549_LowRes.png)
 
@@ -54,9 +62,9 @@ The following procedure describes the process for connecting to the repository o
 
     The gCTS app now displays the repository view of your new repository, in the **CREATED** status. ![image](/documentation/images/loio270e0773776f47f9bc905c2b7229225e_LowRes.png)
 
-13. To finalize the connection with your remote repository, click **Clone Repository**. ![image](/documentation/images/loio23b4a479627643619f8cb8334bf6a988_LowRes.png)
+17. To finalize the connection with your remote repository, click **Clone Repository**. ![image](/documentation/images/loio23b4a479627643619f8cb8334bf6a988_LowRes.png)
 
-14. Click **Clone** to confirm that you want to clone the repository.
+18. Click **Clone** to confirm that you want to clone the repository.
 
     ![image](/documentation/images/loiob3fe5eed990d483f81123554bfba9319_LowRes.png)
 

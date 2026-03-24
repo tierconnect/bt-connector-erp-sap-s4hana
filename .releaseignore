@@ -1,0 +1,14 @@
+# Release Ignore File
+# Add patterns here to exclude files from the release zip archive
+# Patterns follow the same format as .gitignore
+#
+# Examples:
+# *.example
+# private/
+# secrets/
+# build/
+# dist/
+# coverage/
+# *.bak
+.github
+.releaseignore

@@ -41,6 +41,7 @@ The BarTender Print Connector for S/4HANA Cloud application is developed in ABAP
 * SAP S/4HANA Public Cloud system
 
 ### For local development you would require the following:
+* A Git platform and a repository for the custom plugin
 * [Eclipse IDE with ABAP Development Tools (ADT)](https://developers.sap.com/tutorials/abap-install-adt..html)
 
 ## Installation
