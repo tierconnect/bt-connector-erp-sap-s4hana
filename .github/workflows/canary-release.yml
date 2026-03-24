@@ -20,7 +20,7 @@ jobs:
         id: check
         run: |
           # Get all branches that contain this tag
-          BRANCHES=$(git branch -r --contains ${{ github.ref }} | grep -E "origin/canary/")
+          BRANCHES=$(git branch -r --contains ${{ github.ref }} | grep -E "origin/canary/" || true)
           
           if [ -n "$BRANCHES" ]; then
             echo "is-canary=true" >> $GITHUB_OUTPUT
