@@ -46,3 +46,7 @@ The BarTender Print Connector for S/4HANA Cloud application is developed in ABAP
 ## How to Obtain Support
 
 If you find a bug or you need additional support, please [contact support](https://support.seagullsoftware.com/hc/en-us) on Seagull's Support Portal.
+
+## End User License Agreement
+
+Seagull Software's consolidated end user license agreement is available on Seagull Software's [web site](https://www.bartendersoftware.com/legal/consolidated-eula).
