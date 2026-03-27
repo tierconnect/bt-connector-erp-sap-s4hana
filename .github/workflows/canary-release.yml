@@ -93,11 +93,11 @@ jobs:
           fi
           
           echo "Uploading $ARTIFACT_FILE to s3://${S3_BUCKET_NAME}/"
-          aws s3 cp "$ARTIFACT_FILE" "s3://${S3_BUCKET_NAME}/$ARTIFACT_FILE" \
+          aws s3 cp "$ARTIFACT_FILE" "s3://${S3_BUCKET_NAME}/sap/$ARTIFACT_FILE" \
             --no-progress
           
           echo "Upload complete!"
-          echo "S3 URL: s3://${S3_BUCKET_NAME}/$ARTIFACT_FILE"
+          echo "S3 URL: s3://${S3_BUCKET_NAME}/sap/$ARTIFACT_FILE"
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
