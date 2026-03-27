@@ -68,7 +68,7 @@ jobs:
           fi
 
           # Create zip file with source code
-          eval "zip -r \"${{ github.event.repository.name }}-${{ steps.tag.outputs.tag-name }}.zip\" src/ documentation/ README.md LICENSE.md .gcts.properties.json ${EXCLUDE_ARGS[@]}"
+          eval "zip -r \"${{ github.event.repository.name }}-${{ steps.tag.outputs.tag-name }}.zip\" src/ documentation/ README.md .gcts.properties.json ${EXCLUDE_ARGS[@]}"
       - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
