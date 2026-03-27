@@ -120,7 +120,8 @@ CLASS ZSEAGULL_CL_API_CALL IMPLEMENTATION.
           lo_http_client->get_http_request(  )->set_authorization_bearer( i_bearer = lv_string ).
 
           lo_http_client->get_http_request(  )->set_header_fields( VALUE #(  ( name = if_web_http_header=>content_type value = if_web_http_header=>accept_application_json )
-                                                                             ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json ) ) ).
+                                                                             ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json )
+                                                                             ( name = 'User-Agent' value = 'SAP-S4HANA-BTC' ) ) ).
 
           lo_http_client->get_http_request(  )->set_text( lv_json ).
 
@@ -176,7 +177,8 @@ data: lt_printer_dtl tYPE tt_printer_dtl.
 *'z9rhmRYIlsBEs7rejveQSVAwHSsINUppQ'.
         lo_http_client->get_http_request(  )->set_authorization_bearer( i_bearer = lv_string ).
         lo_http_client->get_http_request(  )->set_header_fields( VALUE #(  ( name = if_web_http_header=>content_type value = if_web_http_header=>accept_application_json )
-                                                                           ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json ) ) ).
+                                                                           ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json )
+                                                                           ( name = 'User-Agent' value = 'SAP-S4HANA-BTC' ) ) ).
 
         DATA(lo_response) = lo_http_client->execute( if_web_http_client=>get ).
 
@@ -334,7 +336,8 @@ data: lt_printer_dtl tYPE tt_printer_dtl.
 
         lo_http_client->get_http_request(  )->set_authorization_bearer( i_bearer = lv_string ).
         lo_http_client->get_http_request(  )->set_header_fields( VALUE #(  ( name = if_web_http_header=>content_type value = if_web_http_header=>accept_application_json )
-                                                                ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json ) ) ).
+                                                                ( name = if_web_http_header=>accept value = if_web_http_header=>accept_application_json )
+                                                                ( name = 'User-Agent' value = 'SAP-S4HANA-BTC' ) ) ).
         lo_http_client->get_http_request(  )->set_text( lv_json ).
 
         DATA(lo_response) = lo_http_client->execute( if_web_http_client=>post ).
@@ -475,7 +478,8 @@ data: lt_printer_dtl tYPE tt_printer_dtl.
 
           lo_http_bearer_client->get_http_request(  )->set_text( lv_fld_val ).
 
-          lo_http_bearer_client->get_http_request(  )->set_header_fields( VALUE #(  ( name = if_web_http_header=>content_type value = 'application/x-www-form-urlencoded' ) ) ).
+          lo_http_bearer_client->get_http_request(  )->set_header_fields( VALUE #(  ( name = if_web_http_header=>content_type value = 'application/x-www-form-urlencoded' )
+                                                                                      ( name = 'User-Agent' value = 'SAP-S4HANA-BTC' ) ) ).
 
           DATA(lo_bearer_response) = lo_http_bearer_client->execute( if_web_http_client=>post ).
           DATA(lv_bearer_response) = lo_bearer_response->get_text(  ).
