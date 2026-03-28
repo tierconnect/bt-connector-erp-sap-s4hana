@@ -34,6 +34,9 @@ jobs:
     needs: check-canary-branch
     if: needs.check-canary-branch.outputs.is-canary == 'true'
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+      S3_BUCKET_NAME: ${{ vars.S3_BUCKET_NAME }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -69,7 +72,34 @@ jobs:
 
           # Create zip file with source code
           eval "zip -r \"${{ github.event.repository.name }}-${{ steps.tag.outputs.tag-name }}.zip\" src/ documentation/ README.md .gcts.properties.json ${EXCLUDE_ARGS[@]}"
-      - name: Upload to Release
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload artifact to S3
+        env:
+          S3_BUCKET_NAME: ${{ env.S3_BUCKET_NAME }}
+          TAG_NAME: ${{ steps.tag.outputs.tag-name }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          ARTIFACT_FILE="${REPO_NAME}-${TAG_NAME}.zip"
+          
+          if [ ! -f "$ARTIFACT_FILE" ]; then
+            echo "Error: Artifact file $ARTIFACT_FILE not found"
+            exit 1
+          fi
+          
+          echo "Uploading $ARTIFACT_FILE to s3://${S3_BUCKET_NAME}/"
+          aws s3 cp "$ARTIFACT_FILE" "s3://${S3_BUCKET_NAME}/sap/$ARTIFACT_FILE" \
+            --no-progress
+          
+          echo "Upload complete!"
+          echo "S3 URL: s3://${S3_BUCKET_NAME}/sap/$ARTIFACT_FILE"
+
+      - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: ${{ github.event.repository.name }}-${{ steps.tag.outputs.tag-name }}.zip
@@ -77,6 +107,7 @@ jobs:
           prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   jira-release:
     needs: check-canary-branch
     if: needs.check-canary-branch.outputs.is-canary == 'true'
