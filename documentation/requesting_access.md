@@ -19,6 +19,6 @@ This plugin is delivered to S/4HANA systems via SAP's Git-enabled Change and Tra
 
 ---
 
-To access the GitHub repository, you will need to provide an existing GitHub user account to your Seagull representative. This user account will then be given read access to the GitHub repository.
+1. To access the GitHub repository, provide an existing GitHub user account to your Seagull Representative. This user account will be given Read access to the GitHub repository.
 
-Once you have Read access to the repository, documentation is provided in the repository for installing, configuring, and extending the plugin in S/4HANA.
+2. Once you have Read access to the repository, documentation is provided in the repository for installing, configuring, and extending the plugin in S/4HANA.

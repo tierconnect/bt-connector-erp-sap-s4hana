@@ -2,7 +2,7 @@
 
 >**NOTE**
 
-Connect to the repository in the systems of your 3-system landscape in the following sequence: development, test, and production systems.
+>Connect to the repository in the systems of your 3-system landscape in the following sequence: development, test, and production systems.
 
 ---
 
@@ -46,7 +46,7 @@ The following procedure describes the process for connecting to the repository o
 
 14. Select **Provided** as the Role of the repository.
 
-    *Caution:* It is important that you select the **Provided** role to be able to pull changes from remote.
+    *Caution:* To be able to pull changes from remote, you must select the **Provided** role.
 
     ![image](/documentation/images/loioa48cb66084fb4f14832f3dda223ea00f_LowRes.png)
 
@@ -58,9 +58,9 @@ The following procedure describes the process for connecting to the repository o
 
     ![image](/documentation/images/loiocac5b91e6b99484cb4244483978a1549_LowRes.png)
 
-    This setting defines the visibility in your system and doesn't impact the visibility of the remote repository. If you need to set the Visibility to Private, you can do so by editing the repository after you finish the creation process. If you set the Visibility to Private and other users need access, you will need to add collaborators to the repository in the gCTS app.
+    This setting defines the visibility in your system and doesn't impact the visibility of the remote repository. If you need to set the Visibility to Private, you can edit the repository after you finish the creation process. If you set the Visibility to Private and other users need access, you will need to add collaborators to the repository in the gCTS app.
 
-    The gCTS app now displays the repository view of your new repository, in the **CREATED** status. ![image](/documentation/images/loio270e0773776f47f9bc905c2b7229225e_LowRes.png)
+    The gCTS app now displays the repository view of your new repository, in the CREATED status. ![image](/documentation/images/loio270e0773776f47f9bc905c2b7229225e_LowRes.png)
 
 17. To finalize the connection with your remote repository, click **Clone Repository**. ![image](/documentation/images/loio23b4a479627643619f8cb8334bf6a988_LowRes.png)
 
@@ -79,6 +79,6 @@ You are now ready to use the extension.
 
 >**Note**
 
-When you clone a repository or pull a commit of a repository containing an SAP Fiori application to your system, all development objects of the app are imported. After the import, certain activation actions are performed, such as publishing the service binding. This process may take some time to complete. Seagull recommends that you wait for the activation process to finish before starting to test the app. 
+>When you clone a repository or pull a commit of a repository containing an SAP Fiori application to your system, all development objects of the app are imported. After the import, certain activation actions are performed, such as publishing the service binding. This process may take some time to complete. Seagull recommends that you wait for the activation process to finish before starting to test the app. 
 
-**Important:** Do not use ABAP development tools for Eclipse for manual actions, such as publishing the service binding.
+**Important:** Do not use ABAP development tools for Eclipse to perform manual actions, such as publishing the service binding.

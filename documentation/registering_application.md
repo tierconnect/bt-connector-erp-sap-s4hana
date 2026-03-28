@@ -2,15 +2,16 @@
 
 ## Description
 
-In order to authenticate from third-party applications, the application must be registered within your BarTender Cloud tenant. 
+In order to authenticate from third-party applications, the application must be registered within your BarTender Cloud tenant.
 
 ## Procedure
-In BarTender Cloud, use the Navigation menu and navigate to **Administration > API Keys**.
 
-Click the link for **Register Application for Password-Based Access**.
+1. On the BarTender Cloud menu go to Administration > API Keys.
 
-Enter a friendly name, such as **SAP S/4HANA** and click **Register**.
+2. In the Console Applications and Services (Password-Based) panel, click **Register Application for Password-Based Access**.
 
-Click the Ellipse for your application registration and select **View ID & Secret**.
+3. Enter a friendly name, such as *SAP S/4HANA*, and click **Register**.
 
-Copy the Application ID and Application Secret for use in configuring the plugin.
+4. Click the vertical ellipsis menu for your application registration and select **View ID & Secret**.
+
+5. Copy the Application ID and Application Secret for use in configuring the plugin.
