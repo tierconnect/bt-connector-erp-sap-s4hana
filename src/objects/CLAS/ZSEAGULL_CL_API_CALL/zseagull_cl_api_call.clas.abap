@@ -34,6 +34,11 @@ CLASS zseagull_cl_api_call DEFINITION
 
     METHODS: get_bearer_token EXPORTING ev_bearer_token TYPE string,
 
+      get_api_base_url RETURNING VALUE(rv_api_base_url) TYPE string,
+
+      get_bearer_token_url IMPORTING iv_tenant TYPE string
+                           RETURNING VALUE(rv_bearer_token_url) TYPE string,
+
       get_printer_dtl EXPORTING et_printer_dtl TYPE tt_printer_dtl,
 
       get_label_format IMPORTING iv_limit        TYPE int8 OPTIONAL
@@ -99,9 +104,12 @@ CLASS ZSEAGULL_CL_API_CALL IMPLEMENTATION.
     DO.
 
       TRY.
-          DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://havensightconsulting.am1.bartendercloud.com/api/librarian/spaces/1/files/search/' ).
+          DATA(lv_api_base_url) = get_api_base_url( ).
+          DATA(lv_search_url) = lv_api_base_url && '/api/librarian/spaces/1/files/search/'.
+          DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( lv_search_url ).
 
-          "DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://am1.bartendercloud.com/api/librarian/spaces/1/folders' ).
+          "Alternative endpoint if needed
+          "DATA(lv_search_url) = lv_api_base_url && '/api/librarian/spaces/1/folders'."
 
 
           DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
@@ -160,7 +168,9 @@ data: lt_printer_dtl tYPE tt_printer_dtl.
     get_bearer_token( IMPORTING ev_bearer_token = DATA(lv_string) ).
 
     TRY.
-        DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://havensightconsulting.am1.bartendercloud.com/api/printers/' ).
+        DATA(lv_api_base_url) = get_api_base_url( ).
+        DATA(lv_printers_url) = lv_api_base_url && '/api/printers/'.
+        DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( lv_printers_url ).
         DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
 *clear lv_string.
 *lv_string = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IkY1RTNDMjlGN0ZEMkNDNEMzNTZBQkVFN0U4N0UxNTQxN0NFQTQ5MzFSUzI1NiIsInR5cCI6I' &&
@@ -331,7 +341,9 @@ data: lt_printer_dtl tYPE tt_printer_dtl.
 
     TRY.
 
-        DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( 'https://havensightconsulting.am1.bartendercloud.com/api/actions?wait=20s&messageCount=100&messageSeverity=Info' ).
+        DATA(lv_api_base_url) = get_api_base_url( ).
+        DATA(lv_actions_url) = lv_api_base_url && '/api/actions?wait=20s&messageCount=100&messageSeverity=Info'.
+        DATA(lo_http_destination) = cl_http_destination_provider=>create_by_url( lv_actions_url ).
         DATA(lo_http_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_destination ).
 
         lo_http_client->get_http_request(  )->set_authorization_bearer( i_bearer = lv_string ).
@@ -377,6 +389,60 @@ data: lt_printer_dtl tYPE tt_printer_dtl.
     ENDTRY.
   ENDMETHOD.
 
+  METHOD get_api_base_url.
+    "Constructs the BarTender Cloud API base URL from configured tenant, region, and host
+
+    DATA : lt_keys          TYPE TABLE FOR READ IMPORT zr_seagull_cred.
+
+    lt_keys = VALUE #( ( %tky-%key-granttype = 'password' ) ).
+
+    READ ENTITIES OF zr_seagull_cred
+     ENTITY zrseagullcred
+     ALL FIELDS WITH VALUE #( ( %tky-granttype = 'password' ) )
+     RESULT DATA(lt_conn_cred)
+     FAILED DATA(lt_failed)
+     REPORTED DATA(lt_reported).
+
+    READ TABLE lt_conn_cred ASSIGNING FIELD-SYMBOL(<fs_conn_cred>) INDEX 1.
+    IF sy-subrc EQ 0.
+      DATA(lv_tenant) = CONV #( <fs_conn_cred>-tenant ).
+      DATA(lv_region) = COND #( WHEN <fs_conn_cred>-region IS NOT INITIAL
+                               THEN CONV #( <fs_conn_cred>-region )
+                               ELSE 'am1' ).
+      DATA(lv_host) = COND #( WHEN <fs_conn_cred>-host IS NOT INITIAL
+                             THEN CONV #( <fs_conn_cred>-host )
+                             ELSE 'bartendercloud.com' ).
+
+      rv_api_base_url = 'https://' && lv_tenant && '.' && lv_region && '.' && lv_host.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD get_bearer_token_url.
+    "Constructs the OAuth2 bearer token endpoint URL from configured tenant, region, and host
+
+    DATA : lt_keys          TYPE TABLE FOR READ IMPORT zr_seagull_cred.
+
+    lt_keys = VALUE #( ( %tky-%key-granttype = 'password' ) ).
+
+    READ ENTITIES OF zr_seagull_cred
+     ENTITY zrseagullcred
+     ALL FIELDS WITH VALUE #( ( %tky-granttype = 'password' ) )
+     RESULT DATA(lt_conn_cred)
+     FAILED DATA(lt_failed)
+     REPORTED DATA(lt_reported).
+
+    READ TABLE lt_conn_cred ASSIGNING FIELD-SYMBOL(<fs_conn_cred>) INDEX 1.
+    IF sy-subrc EQ 0.
+      DATA(lv_region) = COND #( WHEN <fs_conn_cred>-region IS NOT INITIAL
+                               THEN CONV #( <fs_conn_cred>-region )
+                               ELSE 'am1' ).
+      DATA(lv_host) = COND #( WHEN <fs_conn_cred>-host IS NOT INITIAL
+                             THEN CONV #( <fs_conn_cred>-host )
+                             ELSE 'bartendercloud.com' ).
+
+      rv_bearer_token_url = 'https://auth.' && lv_region && '.' && lv_host && '/connect/token?OrganizationDnsName=' && iv_tenant.
+    ENDIF.
+  ENDMETHOD.
 
   METHOD upd_matdoc_prnt_tab.
 
@@ -449,7 +515,8 @@ data: lt_printer_dtl tYPE tt_printer_dtl.
     READ TABLE lt_conn_cred ASSIGNING FIELD-SYMBOL(<fs_conn_cred>) INDEX 1.
     IF sy-subrc EQ 0.
       TRY.
-          DATA(lo_http_bearer_dest) = cl_http_destination_provider=>create_by_url( CONV #( <fs_conn_cred>-destination ) ).
+          DATA(lv_bearer_url) = get_bearer_token_url( CONV #( <fs_conn_cred>-tenant ) ).
+          DATA(lo_http_bearer_dest) = cl_http_destination_provider=>create_by_url( lv_bearer_url ).
           DATA(lo_http_bearer_client) = cl_web_http_client_manager=>create_by_http_destination( lo_http_bearer_dest ).
 
           cl_web_http_utility=>escape_url( EXPORTING unescaped = CONV #( <fs_conn_cred>-audience )
