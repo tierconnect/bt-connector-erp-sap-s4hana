@@ -16,14 +16,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch all branches
-        run: git fetch --all
+      - name: Fetch all branches and tags
+        run: |
+          git fetch --all
+          git fetch --tags
+
+      - name: Get tag commit SHA
+        id: get_tag_sha
+        run: echo "tag_sha=$(git rev-list -n 1 ${{ github.ref }})" >> $GITHUB_OUTPUT
+
+      - name: Debug branch and tag visibility
+        run: |
+          echo "=== Remote branches ==="
+          git branch -r
+          echo "=== Branches containing tag ==="
+          git branch -r --contains ${{ steps.get_tag_sha.outputs.tag_sha }} || true
 
       - name: Check if tag is from canary branch
         id: check
         run: |
           # Get all branches that contain this tag
-          BRANCHES=$(git branch -r --contains ${{ github.ref }} | grep -E "origin/canary/" || true)
+          BRANCHES=$(git branch -r --contains ${{ steps.get_tag_sha.outputs.tag_sha }} | grep -E "origin/canary/" || true)
           
           if [ -n "$BRANCHES" ]; then
             echo "is-canary=true" >> $GITHUB_OUTPUT
