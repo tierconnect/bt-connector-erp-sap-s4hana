@@ -3,7 +3,7 @@ name: Canary Release - Generate Source Archive
 on:
   push:
     tags:
-      - '**'
+      - 'v*'
 
 jobs:
   check-canary-branch:
