@@ -18,10 +18,10 @@ jobs:
 
       - name: Fetch all branches and tags
         run: |
-          git fetch --all
           # Delete all local tags before fetching to avoid "would clobber existing tag"
           # errors when a tag has been deleted and re-created on the remote.
           git tag -l | xargs -r git tag -d
+          git fetch --all
           git fetch --tags --force
 
       - name: Get tag commit SHA
