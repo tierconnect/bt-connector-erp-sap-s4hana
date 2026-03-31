@@ -3,7 +3,7 @@ name: Canary Release - Generate Source Archive
 on:
   push:
     tags:
-      - '**'
+      - '*v'
 
 jobs:
   check-canary-branch:
@@ -19,7 +19,10 @@ jobs:
       - name: Fetch all branches and tags
         run: |
           git fetch --all
-          git fetch --tags
+          # Delete all local tags before fetching to avoid "would clobber existing tag"
+          # errors when a tag has been deleted and re-created on the remote.
+          git tag -l | xargs -r git tag -d
+          git fetch --tags --force
 
       - name: Get tag commit SHA
         id: get_tag_sha
